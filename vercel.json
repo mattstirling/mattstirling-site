@@ -10,7 +10,7 @@
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
     },
     {
-      "source": "/fin-test/:path*",
+      "source": "/fin-test/(.*)",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
     }
   ]
