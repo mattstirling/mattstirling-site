@@ -12,7 +12,7 @@ type Intercom = {
 declare global {
   interface Window {
     Intercom?: Intercom;
-    __finTestMessenger?: { dispose: () => void };
+    __finTestMessenger?: { dispose: () => HTMLScriptElement | undefined };
   }
 }
 
@@ -24,7 +24,9 @@ const apiBases = new Set([
 ]);
 
 // Also safe if a client router or development reload evaluates this module again.
-window.__finTestMessenger?.dispose();
+// Keep the pending loader reference even if a client router removes its head
+// element. Removing a script does not cancel an already started download.
+let loader = window.__finTestMessenger?.dispose();
 let active = false;
 let suspended = false;
 
@@ -34,6 +36,14 @@ function shutdown() {
   // A slow loader must never replay a queued boot after leaving this page.
   if (window.Intercom?.q) window.Intercom.q.length = 0;
   window.Intercom?.('shutdown');
+}
+
+function loadFailed() {
+  shutdown();
+  loader?.remove();
+  loader = undefined;
+  const status = document.getElementById('fin-messenger-status');
+  if (status) status.textContent = 'Messenger could not load. Check your connection or content blocker, then reload this page.';
 }
 
 function mount() {
@@ -60,17 +70,17 @@ function mount() {
   window.Intercom('boot', { app_id: appId, api_base: apiBase });
 
   // The real SDK is reused after shutdown. Its queue only exists before it loads.
-  if (!window.Intercom.q || document.getElementById(scriptId)) return;
+  if (!window.Intercom.q) return;
+  if (loader) {
+    loader.addEventListener('error', loadFailed, { once: true });
+    return;
+  }
   const script = document.createElement('script');
+  loader = script;
   script.id = scriptId;
   script.async = true;
   script.src = `https://widget.intercom.io/widget/${encodeURIComponent(appId)}`;
-  script.addEventListener('error', () => {
-    shutdown();
-    script.remove();
-    const status = document.getElementById('fin-messenger-status');
-    if (status) status.textContent = 'Messenger could not load. Check your connection or content blocker, then reload this page.';
-  }, { once: true });
+  script.addEventListener('error', loadFailed, { once: true });
   document.head.append(script);
 }
 
@@ -97,6 +107,8 @@ window.__finTestMessenger = {
     window.removeEventListener('pageshow', resume);
     document.removeEventListener('astro:before-swap', suspend);
     document.removeEventListener('astro:page-load', resume);
+    loader?.removeEventListener('error', loadFailed);
+    return loader;
   },
 };
 

@@ -27,6 +27,9 @@ pnpm-debug.log*
 # local browser verification and hosting state
 .qa/
 .vercel/
+# Local Salesforce CLI state must never be committed or deployed.
+.sf/
+.sfdx/
 
 .vercel
 .env*

@@ -1,5 +1,7 @@
 .git/
 .qa/
+.sf/
+.sfdx/
 .astro/
 .vscode/
 node_modules/

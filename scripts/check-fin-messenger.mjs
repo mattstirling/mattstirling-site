@@ -12,6 +12,7 @@ function fixture({ path = '/fin-test', configured = true } = {}) {
   const document = new EventTarget();
   const location = { pathname: path };
   const scripts = new Map();
+  const downloads = [];
   const status = { textContent: '' };
   const page = { dataset: configured ? {
     appId: 'offlinefixture', apiBase: 'https://api-iam.eu.intercom.io',
@@ -23,12 +24,12 @@ function fixture({ path = '/fin-test', configured = true } = {}) {
     script.remove = () => scripts.delete(script.id);
     return script;
   };
-  document.head = { append: script => scripts.set(script.id, script) };
+  document.head = { append: script => { scripts.set(script.id, script); downloads.push(script); } };
   const context = vm.createContext({ window, document, location });
   const run = () => vm.runInContext(`(() => { ${source} })()`, context);
   const queued = () => Array.from(window.Intercom?.q ?? [], args => Array.from(args));
   run();
-  return { window, document, location, scripts, status, queued, run };
+  return { window, document, location, scripts, downloads, status, queued, run };
 }
 
 for (const options of [{ path: '/' }, { configured: false }]) {
@@ -79,4 +80,24 @@ assert.equal(failed.scripts.size, 0);
 assert.match(failed.status.textContent, /could not load/);
 assert.deepEqual(failed.queued().map(args => args[0]), ['shutdown']);
 
-console.log('Passed: page isolation, absent config, anonymous settings, duplicate events, slow load after navigation, SDK reuse, back/forward cache, module cleanup, and load failure.');
+// Astro swaps head elements. A detached loader can still be downloading when
+// someone returns to /fin-test; never start a second copy of that request.
+const detached = fixture();
+const pendingLoader = detached.downloads[0];
+detached.document.dispatchEvent(new Event('astro:before-swap'));
+detached.scripts.clear();
+detached.location.pathname = '/';
+detached.document.dispatchEvent(new Event('astro:page-load'));
+assert.equal(detached.queued().some(args => args[0] === 'boot'), false);
+detached.location.pathname = '/fin-test';
+detached.document.dispatchEvent(new Event('astro:page-load'));
+detached.run();
+assert.equal(detached.downloads.length, 1, 'A pending detached loader must survive navigation and module reload.');
+assert.equal(detached.queued().filter(args => args[0] === 'boot').length, 1);
+pendingLoader.dispatchEvent(new Event('error'));
+assert.equal(detached.queued().some(args => args[0] === 'boot'), false, 'The current controller must handle a pending loader failure.');
+assert.match(detached.status.textContent, /could not load/);
+detached.window.dispatchEvent(new Event('pageshow'));
+assert.equal(detached.downloads.length, 2, 'A failed download must be retryable.');
+
+console.log('Passed: page isolation, absent config, anonymous settings, duplicate events, slow load after navigation, SDK reuse, back/forward cache, module cleanup, detached pending loader, and load failure/retry.');
