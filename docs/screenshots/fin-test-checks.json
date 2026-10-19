@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-10-19T15:19:13.533Z",
+  "configuration": "No workspace supplied; Messenger disabled",
+  "results": [
+    {
+      "width": 1440,
+      "overflow": false,
+      "h1s": 1,
+      "heading": "Fin AI Integration Test",
+      "subheading": "Salesforce Sandbox — Chatbot Testing",
+      "robots": "noindex, nofollow, noarchive",
+      "canonical": "https://www.mattstirling.com/fin-test",
+      "status": "Messenger has not been configured for this test page yet.",
+      "intercom": "undefined",
+      "loaderCount": 0
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "h1s": 1,
+      "heading": "Fin AI Integration Test",
+      "subheading": "Salesforce Sandbox — Chatbot Testing",
+      "robots": "noindex, nofollow, noarchive",
+      "canonical": "https://www.mattstirling.com/fin-test",
+      "status": "Messenger has not been configured for this test page yet.",
+      "intercom": "undefined",
+      "loaderCount": 0
+    },
+    {
+      "width": 320,
+      "overflow": false,
+      "h1s": 1,
+      "heading": "Fin AI Integration Test",
+      "subheading": "Salesforce Sandbox — Chatbot Testing",
+      "robots": "noindex, nofollow, noarchive",
+      "canonical": "https://www.mattstirling.com/fin-test",
+      "status": "Messenger has not been configured for this test page yet.",
+      "intercom": "undefined",
+      "loaderCount": 0
+    }
+  ],
+  "home": {
+    "items": 15,
+    "scripts": 0,
+    "intercom": "undefined",
+    "finLink": false,
+    "robots": null
+  },
+  "consoleErrors": [],
+  "intercomRequests": 0,
+  "liveLauncher": "Not tested: customer workspace ID and region required",
+  "chatOpenClose": "Not tested",
+  "finResponses": "Not tested",
+  "salesforceRecords": "Not tested"
+}

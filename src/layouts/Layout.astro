@@ -1,9 +1,20 @@
 ---
 import '../styles/global.css';
 
-const title = 'Matt Stirling — Favourite Films, Books & Cities';
-const description = 'A few of Matt Stirling’s favourite films, books, and cities.';
-const canonicalUrl = new URL('/', Astro.site).href;
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Matt Stirling — Favourite Films, Books & Cities',
+  description = 'A few of Matt Stirling’s favourite films, books, and cities.',
+  path = '/',
+  noindex = false,
+} = Astro.props;
+const canonicalUrl = new URL(path, Astro.site).href;
 const imageUrl = new URL('/social-card.png', Astro.site).href;
 const imageAlt = 'Matt Stirling. A few of my favourite films, books, and cities.';
 ---
@@ -14,6 +25,7 @@ const imageAlt = 'Matt Stirling. A few of my favourite films, books, and cities.
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive" />}
     <meta name="theme-color" content="#f8f6f0" />
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />

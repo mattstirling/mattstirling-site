@@ -1,6 +1,6 @@
 # Matt Stirling
 
-A quiet, single-page personal website for **https://www.mattstirling.com/**, built in the existing Astro project. Plain CSS, system fonts, one content file, no browser JavaScript, and no external asset requests. The three collections sit side by side on desktop and stack on phones.
+A quiet personal website for **https://www.mattstirling.com/**, built in the existing Astro project. The homepage uses plain CSS, system fonts, one content file, no browser JavaScript, and no external asset requests. The three collections sit side by side on desktop and stack on phones.
 
 [KK.org](https://kk.org/) informed the organisation around personal interests. The design, favicon, and text-only social card are original; no images or content were copied.
 
@@ -22,7 +22,7 @@ npm run build
 npm run preview
 ```
 
-The static output is in `dist/`. Preview runs in the foreground; press Ctrl+C to stop it. No environment variables or hosting adapter are needed.
+The static output is in `dist/`. Preview runs in the foreground; press Ctrl+C to stop it. The personal homepage needs no environment variables or hosting adapter. The temporary `/fin-test` page has optional Messenger configuration described below.
 
 ## Edit the collections
 
@@ -68,6 +68,10 @@ Colours, spacing, and breakpoints live in [src/styles/global.css](src/styles/glo
 The included `vercel.json` sets the Astro build and `dist/` output automatically when this repository is imported into Vercel.
 
 The site is live at [mattstirling-site.vercel.app](https://mattstirling-site.vercel.app/), with source in [mattstirling/mattstirling-site](https://github.com/mattstirling/mattstirling-site). See [DEPLOYMENT.md](DEPLOYMENT.md) for Vercel setup, the exact custom-domain DNS records, the apex redirect, and preserving email DNS.
+
+## Temporary Fin test page
+
+`/fin-test` hosts the customer's Intercom Messenger separately from the homepage. See [docs/fin-test.md](docs/fin-test.md) for the two public environment variables, deployment, access limitations, validation, and removal. Messenger stays disabled until a real workspace ID and region are supplied.
 
 ## Screenshots and checks
 

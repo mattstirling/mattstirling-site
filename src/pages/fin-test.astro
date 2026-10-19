@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const appId = import.meta.env.PUBLIC_INTERCOM_APP_ID?.trim() ?? '';
+const region = import.meta.env.PUBLIC_INTERCOM_REGION?.trim().toLowerCase() ?? '';
+const apiBases: Record<string, string> = {
+  us: 'https://api-iam.intercom.io',
+  eu: 'https://api-iam.eu.intercom.io',
+  au: 'https://api-iam.au.intercom.io',
+};
+
+// Both may be empty while setup is pending. Never guess a workspace or region.
+if ((appId || region) && (!/^[a-z0-9]+$/i.test(appId) || !Object.hasOwn(apiBases, region))) {
+  throw new Error('Set PUBLIC_INTERCOM_APP_ID to the real workspace ID and PUBLIC_INTERCOM_REGION to us, eu, or au. Leave both empty to disable Messenger.');
+}
+const configured = Boolean(appId && region);
+---
+
+<Layout
+  title="Fin AI Integration Test — Matt Stirling"
+  description="Temporary Intercom Messenger testing page for a Salesforce Sandbox integration."
+  path="/fin-test"
+  noindex
+>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <span class="monogram" aria-hidden="true">ms.</span>
+    <a href="/" data-astro-reload>Matt Stirling</a>
+  </header>
+
+  <main
+    id="main"
+    class="wrap fin-test"
+    tabindex="-1"
+    data-fin-test
+    data-app-id={configured ? appId : undefined}
+    data-api-base={configured ? apiBases[region] : undefined}
+  >
+    <section class="intro" aria-labelledby="test-title">
+      <h1 id="test-title">Fin AI Integration Test</h1>
+      <p class="intro-text">Salesforce Sandbox — Chatbot Testing</p>
+    </section>
+
+    <div class="test-instructions">
+      <p id="fin-messenger-status" role="status">
+        {configured
+          ? 'Open the chat launcher in the bottom-right corner to begin.'
+          : 'Messenger has not been configured for this test page yet.'}
+      </p>
+      <p class="test-note">Use test data only. Messages go to the configured customer Intercom workspace.</p>
+      <noscript><p>Enable JavaScript to use the chat launcher.</p></noscript>
+    </div>
+  </main>
+
+  <footer class="site-footer wrap"><p>Temporary integration test</p></footer>
+
+  <script>
+    import '../scripts/fin-messenger';
+  </script>
+</Layout>
+
+<style>
+  .fin-test { min-height: 50vh; }
+  .test-instructions { border-top: 1px solid var(--rule); padding-top: 20px; }
+  .test-instructions p { max-width: 60ch; margin: 0 0 16px; }
+  .test-note { color: var(--muted); font-size: 16px; }
+  .site-footer { padding-bottom: 110px; }
+</style>

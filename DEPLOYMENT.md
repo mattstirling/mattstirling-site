@@ -36,7 +36,7 @@ For a fresh Vercel project, select **Add New → Project**, connect GitHub, and 
 | Output directory | `dist` |
 | Node.js version | 24.x |
 | Production branch | `main` |
-| Environment variables | None |
+| Environment variables | None for the homepage; optional `PUBLIC_INTERCOM_APP_ID` and `PUBLIC_INTERCOM_REGION` for the temporary [Fin test page](docs/fin-test.md) |
 
 If you instead put the entire parent folder into a different repository, set the root directory to `website_v1`.
 
