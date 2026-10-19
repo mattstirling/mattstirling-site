@@ -6,7 +6,7 @@ node_modules/
 dist/
 .env*
 docs/
-scripts/
+/scripts/
 AGENTS.md
 README.md
 DEPLOYMENT.md
