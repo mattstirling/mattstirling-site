@@ -1,0 +1,12 @@
+.git/
+.qa/
+.astro/
+.vscode/
+node_modules/
+dist/
+.env*
+docs/
+scripts/
+AGENTS.md
+README.md
+DEPLOYMENT.md

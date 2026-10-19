@@ -67,7 +67,7 @@ Colours, spacing, and breakpoints live in [src/styles/global.css](src/styles/glo
 
 The included `vercel.json` sets the Astro build and `dist/` output automatically when this repository is imported into Vercel.
 
-The source repository is [mattstirling/mattstirling-site](https://github.com/mattstirling/mattstirling-site). See [DEPLOYMENT.md](DEPLOYMENT.md) for Vercel setup, the `www` domain, the apex redirect, and preserving email DNS.
+The site is live at [mattstirling-site.vercel.app](https://mattstirling-site.vercel.app/), with source in [mattstirling/mattstirling-site](https://github.com/mattstirling/mattstirling-site). See [DEPLOYMENT.md](DEPLOYMENT.md) for Vercel setup, the exact custom-domain DNS records, the apex redirect, and preserving email DNS.
 
 ## Screenshots and checks
 

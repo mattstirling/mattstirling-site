@@ -19,6 +19,8 @@ Checked on 19 October 2026 using Node.js 24.18.0 and the existing Astro 7.4.0 in
 
 Passed in Chrome against the production preview at 1440px, 390px, 320px, and 768px widths. All fifteen entries, all three visible navigation links and their destinations, the three-column/stacked layouts, absence of horizontal overflow, and visible keyboard focus were checked. The desktop and mobile screenshots were opened and visually inspected.
 
+The same browser checks also passed against the deployed site at https://mattstirling-site.vercel.app/. The public page returns HTTP 200 without authentication, and the screenshots below were captured from that deployment. The custom domains still require DNS updates; their HTTPS and redirect checks will be completed after those changes.
+
 The dependency-free capture script is ready to run in a local terminal with browser access:
 
 ```sh

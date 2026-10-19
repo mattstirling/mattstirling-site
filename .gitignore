@@ -27,3 +27,6 @@ pnpm-debug.log*
 # local browser verification and hosting state
 .qa/
 .vercel/
+
+.vercel
+.env*

@@ -1,6 +1,8 @@
 # Deploy through GitHub and Vercel
 
-The site is ready to build for Vercel. The included `vercel.json` sets the Astro framework, install command, build command, and output directory. Publishing still requires a GitHub repository, a connected Vercel project, and access to the domain's DNS settings.
+The site is deployed at **https://mattstirling-site.vercel.app/**. Source: [mattstirling/mattstirling-site](https://github.com/mattstirling/mattstirling-site). Vercel project: [mattstirling-site](https://vercel.com/mattstirling-3688/mattstirling-site).
+
+Both custom domains are attached to the project. Vercel is configured to redirect `mattstirling.com` to `www.mattstirling.com` with HTTP 308. DNS changes are still pending; the custom domains currently point to the previous host. The GitHub-to-Vercel connection is also awaiting the account owner's GitHub login connection in Vercel.
 
 Both addresses will work: `www.mattstirling.com` serves the site and `mattstirling.com` redirects to it. No domain transfer or nameserver change is required.
 
@@ -21,7 +23,9 @@ GitHub documents this workflow in [Adding locally hosted code](https://docs.gith
 
 ## 2. Import into Vercel
 
-In Vercel, select **Add New → Project**, connect GitHub, and import the repository.
+The Vercel project has already been created. To enable automatic deployments, connect GitHub in [Vercel account authentication](https://vercel.com/account/authentication), then connect `mattstirling/mattstirling-site` in the project's **Settings → Git**. From an authenticated local checkout, the equivalent command is `npx vercel git connect https://github.com/mattstirling/mattstirling-site.git`.
+
+For a fresh Vercel project, select **Add New → Project**, connect GitHub, and import the repository with these settings:
 
 | Setting | Value |
 | --- | --- |
@@ -36,7 +40,7 @@ In Vercel, select **Add New → Project**, connect GitHub, and import the reposi
 
 If you instead put the entire parent folder into a different repository, set the root directory to `website_v1`.
 
-Select **Deploy** and check the generated Vercel URL. This static site needs no Vercel adapter. Later pushes to `main` publish updates; branches and pull requests receive preview deployments. See [Astro on Vercel](https://vercel.com/docs/frameworks/frontend/astro) and [Vercel’s GitHub integration](https://vercel.com/docs/git/vercel-for-github).
+Select **Deploy** and check the generated Vercel URL. This static site needs no Vercel adapter. Once the Git integration is connected, pushes to `main` publish updates; branches and pull requests receive preview deployments. A direct deployment is also possible with `npx vercel deploy --prod`. See [Astro on Vercel](https://vercel.com/docs/frameworks/frontend/astro) and [Vercel’s GitHub integration](https://vercel.com/docs/git/vercel-for-github).
 
 ## 3. Add both domains
 
@@ -50,15 +54,19 @@ The redirect is configured in Vercel; a DNS record alone does not perform an HTT
 
 ## 4. Copy the exact DNS values Vercel shows
 
-Keep your current DNS provider and nameservers. Export or record the existing DNS zone first.
+The domain is registered through GoDaddy, but Vercel's DNS inspection on 19 October 2026 reports the active nameservers as **`ns8313.hostgator.com` and `ns8314.hostgator.com`**. Therefore, update the records in the **HostGator** DNS zone. Keep these nameservers at GoDaddy. Export the existing DNS zone before editing it.
 
-**The project-specific values cannot be supplied until Vercel has created the project and displayed its domain configuration.** No guessed IP address or generic CNAME target is included here. In each domain's Vercel configuration, copy the displayed record type, name, and value exactly into your current DNS provider:
+These are the exact recommended records returned by `vercel domains verify` for this project on 19 October 2026:
 
-| Hostname | Record normally requested | Where to get the exact value |
+| Type | Name | Value |
 | --- | --- | --- |
-| `www.mattstirling.com` | CNAME for `www` | Vercel’s configuration for `www.mattstirling.com` |
-| `mattstirling.com` | A for the apex (`@` or blank, per your DNS provider) | Vercel’s configuration for `mattstirling.com` |
-| Ownership verification, if requested | TXT at the displayed name | Copy the exact name and token Vercel displays |
+| A | `@` | `216.198.79.1` |
+| A | `@` | `64.29.17.1` |
+| CNAME | `www` | `3ae52bca4abfd79d.vercel-dns-017.com.` |
+
+Vercel recommends both apex A records. In cPanel, a full hostname may be required: use `mattstirling.com.` for the apex and `www.mattstirling.com.` for `www`. Keep the provider's default TTL. No ownership TXT record is currently requested. The old website A value is `108.167.190.81`; replace the website records after checking mail dependencies below.
+
+In [HostGator's portal](https://www.hostgator.com/my-account/login), open **Domains → mattstirling.com → DNS**, or **cPanel → Zone Editor → Manage**. Export the zone, then edit the website records. See [HostGator's DNS guide](https://www.hostgator.com/help/article/manage-dns-records-with-hostgatorenom). If deploying much later, recheck the exact values in [Vercel's domain settings](https://vercel.com/mattstirling-3688/mattstirling-site/settings/domains) before applying them.
 
 Preserve existing **MX, SPF, DKIM, DMARC, mail/autodiscover records, and other verification TXT records**. Add a requested verification TXT record separately; do not replace unrelated TXT records.
 
