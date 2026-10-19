@@ -2,7 +2,7 @@
 
 The site is deployed at **https://mattstirling-site.vercel.app/**. Source: [mattstirling/mattstirling-site](https://github.com/mattstirling/mattstirling-site). Vercel project: [mattstirling-site](https://vercel.com/mattstirling-3688/mattstirling-site).
 
-Both custom domains are attached to the project. Vercel is configured to redirect `mattstirling.com` to `www.mattstirling.com` with HTTP 308. DNS changes are still pending; the custom domains currently point to the previous host. The GitHub-to-Vercel connection is also awaiting the account owner's GitHub login connection in Vercel.
+Both custom domains are attached to the project. Vercel is configured to redirect `mattstirling.com` to `www.mattstirling.com` with HTTP 308. The GitHub repository is connected to Vercel, with `main` as the production branch. Custom-domain DNS setup is in progress; the current nameservers still return the previous hosting address.
 
 Both addresses will work: `www.mattstirling.com` serves the site and `mattstirling.com` redirects to it. No domain transfer or nameserver change is required.
 
@@ -23,7 +23,7 @@ GitHub documents this workflow in [Adding locally hosted code](https://docs.gith
 
 ## 2. Import into Vercel
 
-The Vercel project has already been created. To enable automatic deployments, connect GitHub in [Vercel account authentication](https://vercel.com/account/authentication), then connect `mattstirling/mattstirling-site` in the project's **Settings → Git**. From an authenticated local checkout, the equivalent command is `npx vercel git connect https://github.com/mattstirling/mattstirling-site.git`.
+The Vercel project and GitHub integration are already connected. Push changes to `main` to deploy automatically. The connection is shown in the project's **Settings → Git**. To recreate it, connect GitHub in [Vercel account authentication](https://vercel.com/account/authentication), install the [Vercel GitHub app](https://github.com/apps/vercel) with access to this repository, then run `npx vercel git connect https://github.com/mattstirling/mattstirling-site.git` from an authenticated local checkout.
 
 For a fresh Vercel project, select **Add New → Project**, connect GitHub, and import the repository with these settings:
 
@@ -54,7 +54,7 @@ The redirect is configured in Vercel; a DNS record alone does not perform an HTT
 
 ## 4. Copy the exact DNS values Vercel shows
 
-The domain is registered through GoDaddy, but Vercel's DNS inspection on 19 October 2026 reports the active nameservers as **`ns8313.hostgator.com` and `ns8314.hostgator.com`**. Therefore, update the records in the **HostGator** DNS zone. Keep these nameservers at GoDaddy. Export the existing DNS zone before editing it.
+The domain is managed in the **HostGator account**, as confirmed in its domain dashboard. The current nameservers are **`ns8313.hostgator.com` and `ns8314.hostgator.com`**. HostGator's domain DNS editor initially contained no records, and its hosting cPanel has no zone for this domain. A `www` CNAME has been added in the domain editor, but the active nameservers still return the old hosting address. DNS setup must be completed and verified before treating the custom domain as live.
 
 These are the exact recommended records returned by `vercel domains verify` for this project on 19 October 2026:
 
