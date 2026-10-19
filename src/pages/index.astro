@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Collection from '../components/Collection.astro';
+import { collections, personalPhoto } from '../data/favourites';
+---
+
+<Layout>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header wrap">
+    <span class="monogram" aria-hidden="true">ms.</span>
+    <nav class="site-nav" aria-label="Main navigation">
+      {collections.map(({ id, title }) => <a href={`#${id}`}>{title}</a>)}
+    </nav>
+  </header>
+
+  <main id="main" class="wrap" tabindex="-1">
+    <section class:list={['intro', { 'intro-with-photo': personalPhoto }]} aria-labelledby="site-title">
+      <div>
+        <h1 id="site-title">Matt Stirling</h1>
+        <p class="intro-text">A few of my favourite films, books, and cities.</p>
+      </div>
+      {personalPhoto && (
+        <figure class="personal-photo">
+          <Image
+            src={personalPhoto.src}
+            alt={personalPhoto.alt}
+            width={160}
+            densities={[1, 2]}
+            format="webp"
+            style={{ objectPosition: personalPhoto.position ?? 'center' }}
+            loading="eager"
+          />
+          {personalPhoto.caption?.trim() && <figcaption>{personalPhoto.caption}</figcaption>}
+        </figure>
+      )}
+    </section>
+
+    <div class="collections">
+      {collections.map((collection) => <Collection {...collection} />)}
+    </div>
+  </main>
+
+  <footer class="site-footer wrap">
+    <p>Matt Stirling</p>
+    <a href="#site-title">Back to top <span aria-hidden="true">↑</span></a>
+  </footer>
+</Layout>

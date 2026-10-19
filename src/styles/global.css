@@ -1,0 +1,123 @@
+:root {
+  color-scheme: light;
+  --bg: #f8f6f0;
+  --text: #2b302a;
+  --muted: #63665c;
+  --accent: #87513d;
+  --rule: #d6d4c9;
+  --serif: Georgia, 'Times New Roman', serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-padding-top: 1.5rem; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: #e6d9c8; color: var(--text); }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-radius: 1px; }
+img { display: block; max-width: 100%; height: auto; }
+.wrap { width: min(900px, calc(100% - 64px)); margin-inline: auto; }
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 32px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.monogram {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-style: italic;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.site-nav { display: flex; gap: 28px; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.site-nav a:hover { text-decoration: underline; }
+.intro { padding-block: 48px 52px; }
+h1, h2 { margin: 0; font-family: var(--serif); font-weight: 400; }
+h1 { font-size: clamp(40px, 5vw, 58px); line-height: 1.15; letter-spacing: -0.045em; }
+.intro-text { margin: 16px 0 0; color: var(--muted); text-wrap: pretty; }
+.collections { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+.collection { min-width: 0; scroll-margin-top: 24px; }
+
+.collection h2 {
+  font-size: 29px;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  padding-bottom: 17px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.favourites-list { list-style: none; margin: 14px 0 0; padding: 0; }
+.favourite-item { padding-block: 10px; overflow-wrap: anywhere; }
+.item-text { min-width: 0; }
+.note { margin: 6px 0 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+.has-image { display: flex; align-items: flex-start; gap: 14px; }
+.item-image { flex-shrink: 0; width: 64px; height: 88px; object-fit: cover; }
+.intro-with-photo { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.personal-photo { flex-shrink: 0; width: 160px; margin: 0; }
+.personal-photo img { width: 160px; height: 200px; object-fit: cover; }
+.personal-photo figcaption { margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+.site-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 64px;
+  padding-block: 22px 36px;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.site-footer p { margin: 0; }
+.site-footer a { padding-block: 8px; text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.site-footer a span { margin-left: 5px; }
+
+.skip-link {
+  position: absolute;
+  left: 20px;
+  top: 12px;
+  padding: 8px 16px;
+  background: var(--bg);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: translateY(0); }
+
+@media (max-width: 700px) {
+  .wrap { width: calc(100% - 48px); }
+  .site-header { padding-block: 20px 14px; }
+  .site-nav { gap: 22px; }
+  .intro { padding-block: 36px 38px; }
+  .intro-text { max-width: 30ch; margin-top: 14px; }
+  .collections { grid-template-columns: 1fr; gap: 36px; }
+  .collection h2 { font-size: 28px; padding-bottom: 13px; }
+  .favourites-list { margin-top: 12px; }
+  .favourite-item { padding-block: 8px; }
+  .site-footer { margin-top: 44px; padding-block: 18px 28px; }
+  .intro-with-photo { flex-direction: column; align-items: flex-start; gap: 24px; }
+}
+
+@media (max-width: 360px) {
+  .wrap { width: calc(100% - 40px); }
+  .site-header { gap: 16px; }
+  .site-nav { gap: 18px; }
+  body { font-size: 17px; }
+}

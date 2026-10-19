@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import type { FavouriteItem } from '../data/favourites';
+
+interface Props {
+  id: string;
+  title: string;
+  items: FavouriteItem[];
+}
+
+const { id, title, items } = Astro.props;
+
+// Only actual web destinations become links; blank or placeholder URLs stay text.
+function realLink(value?: string): string | undefined {
+  if (!value?.trim()) return undefined;
+  try {
+    const url = new URL(value.trim());
+    return ['https:', 'http:'].includes(url.protocol) ? url.href : undefined;
+  } catch {
+    return undefined;
+  }
+}
+---
+
+<section id={id} class="collection" aria-labelledby={`${id}-heading`} tabindex="-1">
+  <h2 id={`${id}-heading`}>{title}</h2>
+  <ul class="favourites-list" role="list">
+    {items.map(({ title, note, image, href }) => {
+      const link = realLink(href);
+      return (
+        <li class:list={['favourite-item', { 'has-image': image?.src }]}>
+          {image?.src && (
+            <Image
+              class="item-image"
+              src={image.src}
+              alt={image.alt}
+              width={64}
+              densities={[1, 2]}
+              format="webp"
+              style={{ objectPosition: image.position ?? 'center' }}
+              loading="lazy"
+            />
+          )}
+          <div class="item-text">
+            {link ? <a class="item-title" href={link}>{title}</a> : <span class="item-title">{title}</span>}
+            {note?.trim() && <p class="note">{note}</p>}
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+</section>

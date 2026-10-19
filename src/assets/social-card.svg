@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f8f6f0"/>
+  <g fill="#2b302a" font-family="Georgia, 'Times New Roman', serif">
+    <text x="96" y="110" font-size="38" font-style="italic">ms.</text>
+    <text x="96" y="300" font-size="88" letter-spacing="-4">Matt Stirling</text>
+  </g>
+  <path d="M96 146H1104M96 484H1104" stroke="#d6d4c9"/>
+  <text x="96" y="364" fill="#63665c" font-family="'Segoe UI', Arial, sans-serif" font-size="30">A few of my favourite films, books, and cities.</text>
+  <text x="96" y="536" fill="#87513d" font-family="'Segoe UI', Arial, sans-serif" font-size="24">mattstirling.com</text>
+</svg>

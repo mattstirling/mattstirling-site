@@ -1,0 +1,37 @@
+{
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "items": 15,
+      "navigation": "passed",
+      "layout": "three columns"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "items": 15,
+      "navigation": "passed",
+      "layout": "stacked"
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "overflow": false,
+      "items": 15,
+      "navigation": "passed",
+      "layout": "stacked"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflow": false,
+      "items": 15,
+      "navigation": "passed",
+      "layout": "three columns"
+    }
+  ],
+  "keyboardFocus": "passed"
+}
