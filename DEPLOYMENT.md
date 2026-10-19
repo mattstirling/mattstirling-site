@@ -2,9 +2,9 @@
 
 The site is deployed at **https://mattstirling-site.vercel.app/**. Source: [mattstirling/mattstirling-site](https://github.com/mattstirling/mattstirling-site). Vercel project: [mattstirling-site](https://vercel.com/mattstirling-3688/mattstirling-site).
 
-Both custom domains are attached to the project. Vercel is configured to redirect `mattstirling.com` to `www.mattstirling.com` with HTTP 308. The GitHub repository is connected to Vercel, with `main` as the production branch. Custom-domain DNS setup is in progress; the current nameservers still return the previous hosting address.
+Both custom domains are attached to the project. Vercel is configured to redirect `mattstirling.com` to `www.mattstirling.com` with HTTP 308. The GitHub repository is connected to Vercel, with `main` as the production branch; a push has been verified to create a successful production deployment automatically.
 
-Both addresses will work: `www.mattstirling.com` serves the site and `mattstirling.com` redirects to it. No domain transfer or nameserver change is required.
+The domain's nameservers were changed to Vercel on 19 October 2026. HostGator and the .com registry confirm the new values, and Vercel reports valid DNS for both domains. HTTPS certificates are issued. The Vercel edge serves the homepage with HTTP 200 and redirects the apex to `www` with HTTP 308. Some public DNS caches still retain the old address while propagation completes. Domain registration remains managed through HostGator.
 
 ## 1. Push this project to GitHub
 
@@ -52,34 +52,35 @@ In the Vercel project's **Settings → Domains**:
 
 The redirect is configured in Vercel; a DNS record alone does not perform an HTTP redirect. See [Vercel’s domain redirect instructions](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting).
 
-## 4. Copy the exact DNS values Vercel shows
+## 4. Connect the domain through Vercel DNS
 
-The domain is managed in the **HostGator account**, as confirmed in its domain dashboard. The current nameservers are **`ns8313.hostgator.com` and `ns8314.hostgator.com`**. HostGator's domain DNS editor initially contained no records, and its hosting cPanel has no zone for this domain. A `www` CNAME has been added in the domain editor, but the active nameservers still return the old hosting address. DNS setup must be completed and verified before treating the custom domain as live.
+The domain is managed in the **HostGator account**, as confirmed in its domain dashboard. DNS is now hosted by **Vercel**. The account owner confirmed that this domain is used only for the website, with no email or other services to migrate.
 
-These are the exact recommended records returned by `vercel domains verify` for this project on 19 October 2026:
+In [HostGator's portal](https://www.hostgator.com/my-account/login), open **Domains → mattstirling.com → Nameservers → Change Nameservers**. The values below are already saved; they are the exact intended nameservers returned by `vercel domains inspect mattstirling.com`:
+
+| Setting | Value |
+| --- | --- |
+| Nameserver 1 | `ns1.vercel-dns.com` |
+| Nameserver 2 | `ns2.vercel-dns.com` |
+
+Vercel manages the apex ALIAS automatically. The following explicit record is also configured in Vercel DNS, using the exact target recommended for this project:
 
 | Type | Name | Value |
 | --- | --- | --- |
-| A | `@` | `216.198.79.1` |
-| A | `@` | `64.29.17.1` |
 | CNAME | `www` | `3ae52bca4abfd79d.vercel-dns-017.com.` |
 
-Vercel recommends both apex A records. In cPanel, a full hostname may be required: use `mattstirling.com.` for the apex and `www.mattstirling.com.` for `www`. Keep the provider's default TTL. No ownership TXT record is currently requested. The old website A value is `108.167.190.81`; replace the website records after checking mail dependencies below.
+Future DNS edits belong in **Vercel's Domains dashboard**, not HostGator's DNS editor. If email is added later, put the email provider's MX, SPF, DKIM, DMARC, and verification records in Vercel DNS and preserve them during subsequent website changes.
 
-In [HostGator's portal](https://www.hostgator.com/my-account/login), open **Domains → mattstirling.com → DNS**, or **cPanel → Zone Editor → Manage**. Export the zone, then edit the website records. See [HostGator's DNS guide](https://www.hostgator.com/help/article/manage-dns-records-with-hostgatorenom). If deploying much later, recheck the exact values in [Vercel's domain settings](https://vercel.com/mattstirling-3688/mattstirling-site/settings/domains) before applying them.
-
-Preserve existing **MX, SPF, DKIM, DMARC, mail/autodiscover records, and other verification TXT records**. Add a requested verification TXT record separately; do not replace unrelated TXT records.
-
-Change only website records that conflict at `www` or the apex. If an existing apex address also serves mail (for example, MX points to the apex or SPF uses `a`), arrange an independent mail hostname with the mail provider before changing that address. Avoid an apex CNAME that would conflict with MX/TXT records. See [Vercel’s current domain configuration guide](https://vercel.com/docs/domains/working-with-domains/add-a-domain).
+HostGator advises allowing up to 24–48 hours for nameserver changes to propagate. Check the status in [Vercel's domain settings](https://vercel.com/mattstirling-3688/mattstirling-site/settings/domains). See [Vercel's nameserver guide](https://vercel.com/docs/domains/working-with-nameservers).
 
 ## 5. Verify the live result
 
-Wait for Vercel to show valid DNS configuration and an active HTTPS certificate for both domains. Then confirm:
+Vercel's valid DNS status, HTTPS certificate, homepage, and redirect have been verified. Because some recursive DNS caches still held the previous address, the HTTP checks used `curl --resolve` with an address returned by Vercel's authoritative DNS; TLS certificate verification remained enabled. Once local DNS caches refresh, these ordinary checks should pass without overriding DNS:
 
 - `https://www.mattstirling.com/` loads the site over HTTPS.
 - `https://mattstirling.com/` redirects to `https://www.mattstirling.com/`.
 - Both HTTP variants end at the HTTPS www address.
 - All three navigation links jump to their sections; all fifteen items are present.
-- Email still sends and receives correctly.
+- If email is added in future, confirm it still sends and receives after DNS changes.
 
 For a header check, use `curl -I https://mattstirling.com/` (or `curl.exe` in Windows PowerShell) and inspect the permanent redirect and `Location` header.
